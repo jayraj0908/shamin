@@ -1,0 +1,12 @@
+{
+  "name": "shamin-hotels-concept",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shamin Hotels concept site with cinematic scroll experience",
+  "scripts": {
+    "start": "serve . -l ${PORT:-3000} --no-clipboard"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}

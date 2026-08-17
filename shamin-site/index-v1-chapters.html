@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shamin Hotels — Start Your Story</title>
+<meta name="description" content="Shamin Hotels — the largest hotel owner and operator in Virginia. 70+ hotels, 10,000+ rooms, one family story.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090e;
+  --bg2:#0c1018;
+  --ink:#eef0f4;
+  --muted:#9aa3b2;
+  --gold:#c9a35c;
+  --gold-soft:rgba(201,163,92,.35);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:#07090e}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ---------- Loader ---------- */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .8s ease,visibility .8s}
+#loader.done{opacity:0;visibility:hidden}
+#loader .word{font-family:var(--serif);font-size:clamp(2rem,5vw,3.4rem);letter-spacing:.42em;text-indent:.42em;font-weight:500}
+#loader .word span{opacity:0;display:inline-block;animation:lfade 1.4s ease forwards}
+@keyframes lfade{to{opacity:1}}
+#loader .bar{width:180px;height:1px;background:rgba(255,255,255,.12);overflow:hidden}
+#loader .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s ease}
+#loader .pct{font-size:.7rem;letter-spacing:.3em;color:var(--muted)}
+
+/* ---------- Nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:26px clamp(20px,4vw,56px);mix-blend-mode:normal;transition:background .5s,padding .5s,backdrop-filter .5s}
+nav.scrolled{background:rgba(7,9,14,.72);backdrop-filter:blur(14px);padding-top:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.logo{font-family:var(--serif);font-size:1.35rem;letter-spacing:.34em;text-indent:.34em;font-weight:600}
+.logo em{font-style:normal;color:var(--gold)}
+.nav-links{display:flex;gap:clamp(16px,2.6vw,40px);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.nav-links a{position:relative;padding:4px 0;transition:color .3s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .35s ease}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;border:1px solid var(--gold-soft);color:var(--gold);padding:11px 22px;border-radius:100px;transition:background .35s,color .35s}
+.nav-cta:hover{background:var(--gold);color:#07090e}
+@media(max-width:760px){.nav-links{display:none}}
+
+/* ---------- Shared ---------- */
+.chapter{display:flex;align-items:baseline;gap:18px;margin-bottom:clamp(24px,3vw,40px)}
+.chapter .num{font-family:var(--serif);font-size:1rem;color:var(--gold);letter-spacing:.2em}
+.chapter .line{flex:0 0 60px;height:1px;background:var(--gold-soft);align-self:center}
+.chapter .label{font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
+.h-serif{font-family:var(--serif);font-weight:500;line-height:1.04;font-size:clamp(2.4rem,6vw,5.2rem)}
+.h-serif i{font-style:italic;color:var(--gold)}
+.lede{color:var(--muted);font-weight:300;line-height:1.85;font-size:clamp(.95rem,1.15vw,1.08rem);max-width:56ch}
+.section-pad{padding:clamp(90px,12vh,160px) clamp(20px,6vw,96px)}
+[data-reveal]{opacity:0;transform:translateY(46px)}
+
+/* ---------- Hero (scroll film) ---------- */
+#hero{position:relative;height:100vh;overflow:hidden}
+#hero .media{position:absolute;inset:0}
+#hero .media video,#hero .media img.scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity,transform}
+#hero .media .first{opacity:1}
+.film-caption{position:absolute;left:clamp(20px,6vw,96px);bottom:9vh;z-index:4;opacity:0;transform:translateY(20px)}
+.film-caption .fc-num{display:block;font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.film-caption .fc-label{font-family:var(--serif);font-size:clamp(1.7rem,3.2vw,2.9rem);font-weight:500;text-shadow:0 4px 40px rgba(0,0,0,.6)}
+.film-chapters{position:absolute;right:clamp(20px,4vw,56px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:4}
+.film-chapters i{width:1px;height:34px;background:rgba(255,255,255,.22);transition:background .4s,height .4s}
+.film-chapters i.on{background:var(--gold);height:52px}
+#hero .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,14,.55) 0%,rgba(7,9,14,.06) 38%,rgba(7,9,14,.1) 62%,var(--bg) 100%)}
+#hero .content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:3;padding:0 20px}
+#hero .kicker{font-size:.72rem;letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:22px}
+#hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(3rem,10.5vw,9.5rem);letter-spacing:.16em;text-indent:.16em;line-height:1;text-shadow:0 6px 60px rgba(0,0,0,.45)}
+#hero .sub{margin-top:26px;font-weight:300;letter-spacing:.06em;color:rgba(255,255,255,.85);font-size:clamp(.95rem,1.4vw,1.2rem)}
+#hero .sub i{font-family:var(--serif);font-style:italic;color:var(--gold)}
+.scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;z-index:4;color:rgba(255,255,255,.7);font-size:.62rem;letter-spacing:.34em;text-transform:uppercase}
+.scroll-cue .stem{width:1px;height:56px;background:linear-gradient(180deg,var(--gold),transparent);animation:stem 2.2s ease-in-out infinite}
+@keyframes stem{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* ---------- Marquee ---------- */
+.marquee{position:relative;padding:26px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden;background:var(--bg)}
+.marquee .track{display:flex;gap:64px;white-space:nowrap;will-change:transform}
+.marquee span{font-family:var(--serif);font-size:1.05rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.34);flex:none}
+.marquee span b{color:var(--gold);font-weight:500}
+
+/* ---------- Story ---------- */
+#story{position:relative;background:var(--bg)}
+.story-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(40px,6vw,110px);align-items:center}
+@media(max-width:900px){.story-grid{grid-template-columns:1fr}}
+.frame{position:relative;overflow:hidden;border-radius:4px}
+.frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.18);will-change:transform}
+.frame::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.frame .cap{position:absolute;left:18px;bottom:14px;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.75);background:rgba(7,9,14,.55);padding:8px 14px;backdrop-filter:blur(6px)}
+.story-copy p{margin-top:22px}
+.pull{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,2vw,1.7rem);color:var(--ink);line-height:1.5;border-left:1px solid var(--gold);padding-left:26px;margin-top:34px}
+.pull cite{display:block;font-family:var(--sans);font-style:normal;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.story-second{margin-top:clamp(70px,10vh,130px)}
+
+/* ---------- Numbers ---------- */
+#numbers{background:var(--bg2);position:relative;overflow:hidden}
+#numbers .bgword{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:clamp(8rem,26vw,22rem);color:rgba(255,255,255,.025);letter-spacing:.1em;pointer-events:none;white-space:nowrap}
+.num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);position:relative;z-index:2}
+@media(max-width:820px){.num-grid{grid-template-columns:repeat(2,1fr)}}
+.num-cell{background:var(--bg2);padding:clamp(30px,4vw,58px) clamp(20px,3vw,44px)}
+.num-cell .val{font-family:var(--serif);font-size:clamp(2.6rem,5.4vw,4.6rem);font-weight:500;color:var(--ink);line-height:1}
+.num-cell .val sup{font-size:.45em;color:var(--gold);top:-.7em}
+.num-cell .lab{margin-top:14px;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- Portfolio ---------- */
+#portfolio{background:var(--bg)}
+.port-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.brand-strip{display:flex;gap:clamp(18px,3vw,44px);flex-wrap:wrap;margin-top:26px}
+.brand-strip span{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(255,255,255,.1);padding:10px 18px;border-radius:100px}
+.cards{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,1.6vw,26px);margin-top:clamp(50px,7vh,90px)}
+.card{position:relative;overflow:hidden;border-radius:4px;grid-column:span 4;aspect-ratio:4/4.6;cursor:pointer}
+.card:nth-child(1),.card:nth-child(6){grid-column:span 5}
+.card:nth-child(2){grid-column:span 7}
+.card:nth-child(5){grid-column:span 7}
+.card:nth-child(3){grid-column:span 6}.card:nth-child(4){grid-column:span 6}
+@media(max-width:820px){.card,.card:nth-child(n){grid-column:span 12;aspect-ratio:16/10}}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 1.2s cubic-bezier(.19,1,.22,1),filter 1.2s;filter:saturate(.85) brightness(.88)}
+.card:hover img{transform:scale(1.02);filter:saturate(1) brightness(1)}
+.card .shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(7,9,14,.88));transition:opacity .5s}
+.card .meta{position:absolute;left:22px;right:22px;bottom:20px;z-index:2}
+.card .meta .b{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.card .meta h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,1.8vw,1.7rem);margin-top:8px}
+.card .meta .loc{font-size:.72rem;letter-spacing:.16em;color:var(--muted);margin-top:6px;text-transform:uppercase}
+.card .idx{position:absolute;top:18px;right:20px;font-family:var(--serif);color:rgba(255,255,255,.5);font-size:.95rem;letter-spacing:.14em}
+
+/* ---------- Mondelle ---------- */
+#mondelle-intro{position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#mondelle-intro .bg{position:absolute;inset:-12% 0;background:url('assets/mondelle.jpg') center/cover no-repeat;will-change:transform;transform:scale(1.15)}
+#mondelle-intro .tint{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,rgba(7,9,14,.25) 30%,rgba(7,9,14,.35) 70%,var(--bg) 100%)}
+#mondelle-intro .center{position:relative;z-index:2;text-align:center;padding:0 20px}
+#mondelle-intro .center .over{font-size:.7rem;letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:20px}
+#mondelle-intro .center h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,7.5vw,7rem);line-height:1.02;text-shadow:0 8px 70px rgba(0,0,0,.5)}
+#mondelle-intro .center h2 i{font-style:italic;color:var(--gold)}
+#mondelle-intro .center .under{margin-top:20px;color:rgba(255,255,255,.85);font-weight:300;letter-spacing:.05em}
+
+#mondelle-detail{background:var(--bg)}
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);margin-top:clamp(46px,6vh,80px)}
+@media(max-width:900px){.spec-grid{grid-template-columns:repeat(2,1fr)}}
+.spec{background:var(--bg);padding:clamp(24px,3vw,44px) clamp(18px,2.4vw,36px)}
+.spec .v{font-family:var(--serif);font-size:clamp(1.9rem,3.4vw,3rem);color:var(--ink)}
+.spec .v em{font-style:normal;color:var(--gold);font-size:.55em}
+.spec .k{margin-top:10px;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+
+/* scrub video panel */
+#ballroom{position:relative;height:100vh;overflow:hidden}
+#ballroom video,#ballroom img.fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#ballroom .veil{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,transparent 30%,transparent 68%,var(--bg) 100%)}
+#ballroom .cap{position:absolute;left:clamp(20px,6vw,96px);bottom:12vh;z-index:3;max-width:520px}
+#ballroom .cap .t{font-family:var(--serif);font-size:clamp(1.8rem,3.4vw,3rem);font-weight:500;line-height:1.15}
+#ballroom .cap .d{margin-top:14px;color:var(--muted);font-weight:300;line-height:1.8;font-size:.95rem}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(50px,7vh,90px)}
+@media(max-width:820px){.duo{grid-template-columns:1fr}}
+.duo .frame{aspect-ratio:16/10}
+.amenities{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.amenities span{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);border:1px solid rgba(255,255,255,.14);padding:11px 20px;border-radius:100px;background:rgba(255,255,255,.02)}
+.amenities span b{color:var(--gold);font-weight:500}
+
+/* ---------- Springline ---------- */
+#springline{background:var(--bg2)}
+.spring-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,100px);align-items:center}
+@media(max-width:900px){.spring-grid{grid-template-columns:1fr}}
+.tick-list{margin-top:30px;display:flex;flex-direction:column}
+.tick{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);align-items:baseline}
+.tick .n{font-family:var(--serif);color:var(--gold);font-size:1.05rem;min-width:34px}
+.tick .txt b{display:block;font-weight:600;letter-spacing:.04em;font-size:.95rem}
+.tick .txt small{color:var(--muted);font-weight:300;line-height:1.7;display:block;margin-top:4px;font-size:.85rem}
+
+/* ---------- CTA / Footer ---------- */
+#cta{position:relative;text-align:center;overflow:hidden}
+#cta .bigline{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,8vw,7.4rem);line-height:1.04}
+#cta .bigline i{font-style:italic;color:var(--gold)}
+#cta .lede{margin:28px auto 0}
+.cta-row{margin-top:44px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.btn{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;padding:17px 38px;border-radius:100px;border:1px solid var(--gold);transition:all .35s}
+.btn.solid{background:var(--gold);color:#07090e}
+.btn.solid:hover{background:transparent;color:var(--gold)}
+.btn.ghost{color:var(--ink);border-color:rgba(255,255,255,.2)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:60px clamp(20px,6vw,96px) 40px;background:var(--bg)}
+.foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.foot-grid .col .h{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.foot-grid .col p,.foot-grid .col a{display:block;color:var(--ink);font-weight:300;font-size:.92rem;line-height:2}
+.foot-grid .col a:hover{color:var(--gold)}
+.foot-base{margin-top:50px;padding-top:26px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:.7rem;letter-spacing:.14em}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="word" id="loader-word"></div>
+  <div class="bar"><i id="loader-bar"></i></div>
+  <div class="pct" id="loader-pct">0%</div>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#hero">SHAM<em>I</em>N</a>
+  <div class="nav-links">
+    <a href="#story">Our Story</a>
+    <a href="#numbers">By The Numbers</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#mondelle-intro">The Mondelle</a>
+    <a href="#springline">Springline</a>
+  </div>
+  <a class="nav-cta" href="#cta">Careers</a>
+</nav>
+
+<!-- HERO — continuous scroll film: each <video> is one scene of the journey.
+     To add scenes (lobby / elevator / suite / rooftop), just add more <video class="scene"> tags in order.
+     The scrub engine automatically extends the scroll length and chapter markers. -->
+<section id="hero">
+  <div class="media" id="film">
+    <video class="scene first" data-num="Scene 01" data-caption="The Arrival — Springline at District 60" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142659_427f2ff7-bc01-4210-90d4-6abc29b4d9de.mp4" muted playsinline preload="auto" poster="assets/mondelle.jpg"></video>
+    <img class="scene" data-num="Scene 02" data-caption="Through the doors — The Lobby" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_145123_8e793dff-77c8-4d8d-9522-864741334ca6.png" alt="">
+    <video class="scene" data-num="Scene 03" data-caption="The Grand Ballroom — 12,600 sq ft" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142612_33872e80-d08e-493d-b588-6f6ea9c79401.mp4" muted playsinline preload="auto"></video>
+    <img class="scene" data-num="Scene 04" data-caption="The Ascent — Floor 11" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_145123_e67bc895-2d2f-49b3-b2d3-8a0c05432f89.png" alt="">
+    <img class="scene" data-num="Scene 05" data-caption="The Rooftop — Infinity Pool at Dusk" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_143125_5c36af34-74d9-4316-a63f-58db180f5184.png" alt="">
+  </div>
+  <div class="veil"></div>
+  <div class="film-caption" id="film-caption"><span class="fc-num" id="fc-num"></span><span class="fc-label" id="fc-label"></span></div>
+  <div class="film-chapters" id="film-chapters"></div>
+  <div class="content" id="hero-content">
+    <div class="kicker">Start your story with</div>
+    <h1>SHAMIN</h1>
+    <div class="sub">The largest hotel owner &amp; operator in Virginia — <i>one family, seventy hotels, two million guests a year.</i></div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="stem"></span></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee"><div class="track" id="marquee-track">
+  <span>Hilton</span><span>·</span><span>Marriott</span><span>·</span><span>Hyatt</span><span>·</span><span>IHG</span><span>·</span><span><b>70+</b> Hotels</span><span>·</span><span><b>5</b> States</span><span>·</span><span><b>10,000+</b> Rooms</span><span>·</span>
+  <span>Hilton</span><span>·</span><span>Marriott</span><span>·</span><span>Hyatt</span><span>·</span><span>IHG</span><span>·</span><span><b>70+</b> Hotels</span><span>·</span><span><b>5</b> States</span><span>·</span><span><b>10,000+</b> Rooms</span><span>·</span>
+</div></div>
+
+<!-- STORY -->
+<section id="story" class="section-pad">
+  <div class="chapter" data-reveal><span class="num">01</span><span class="line"></span><span class="label">Our Story</span></div>
+  <h2 class="h-serif" data-reveal>From a Greyhound bus<br>to a hospitality <i>empire.</i></h2>
+  <div class="story-grid" style="margin-top:clamp(50px,7vh,90px)">
+    <div class="frame" style="aspect-ratio:4/3" data-parallax>
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_94b7723c-b0c8-460b-90fa-7f147f6310f6.png" alt="1970 — arriving in Richmond">
+      <div class="cap">Richmond, Virginia — 1970</div>
+    </div>
+    <div class="story-copy">
+      <p class="lede" data-reveal>In 1970, P.C. Amin left his rural farming village in India and crossed the sea seeking opportunity. With a master's degree in engineering from the University of Utah, he boarded a Greyhound bus and travelled state to state looking for work. With $20 left in his pocket, he stepped off in Richmond, Virginia.</p>
+      <p class="lede" data-reveal>Eight years later, a stay at a friend's hotel changed everything. "I didn't have money," he said, "but I had a dream." With his brother-in-law B.N. Shah, he purchased a bankrupt 104-room inn in Lumberton, North Carolina — the first Shamin hotel.</p>
+    </div>
+  </div>
+  <div class="story-grid story-second">
+    <div class="story-copy">
+      <p class="lede" data-reveal>From that lone roadside inn, Shamin Hotels grew into the largest hotel owner and operator in Virginia — and it remains, at its core, a family company.</p>
+      <div class="pull" data-reveal>"Every associate is equal, everyone's opinion is equal, and everyone works as a team to provide a memorable guest experience."
+        <cite>— Neil Amin, Chief Executive Officer</cite>
+      </div>
+    </div>
+    <div class="frame" style="aspect-ratio:4/3" data-parallax>
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142731_6d1ddd7e-f330-4ce0-bda3-9620b7690262.png" alt="1978 — the first hotel, Lumberton NC">
+      <div class="cap">Lumberton, North Carolina — 1978</div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers" class="section-pad">
+  <div class="bgword">SHAMIN</div>
+  <div class="chapter" data-reveal><span class="num">02</span><span class="line"></span><span class="label">By The Numbers</span></div>
+  <h2 class="h-serif" data-reveal>Half a century,<br>measured in <i>welcomes.</i></h2>
+  <div class="num-grid" style="margin-top:clamp(46px,6vh,80px)">
+    <div class="num-cell"><div class="val"><span data-count="70"></span><sup>+</sup></div><div class="lab">Hotels Owned &amp; Operated</div></div>
+    <div class="num-cell"><div class="val"><span data-count="10000"></span><sup>+</sup></div><div class="lab">Guest Rooms</div></div>
+    <div class="num-cell"><div class="val"><span data-count="5"></span></div><div class="lab">States — VA · NY · MD · NC · FL</div></div>
+    <div class="num-cell"><div class="val"><span data-count="3000"></span><sup>+</sup></div><div class="lab">Associates</div></div>
+    <div class="num-cell"><div class="val"><span data-count="2"></span>M<sup>+</sup></div><div class="lab">Guests Served Every Year</div></div>
+    <div class="num-cell"><div class="val"><span data-count="28"></span></div><div class="lab">Properties In Development</div></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="section-pad">
+  <div class="port-head">
+    <div>
+      <div class="chapter" data-reveal><span class="num">03</span><span class="line"></span><span class="label">The Portfolio</span></div>
+      <h2 class="h-serif" data-reveal>Seventy hotels.<br>One standard of <i>care.</i></h2>
+    </div>
+    <div data-reveal>
+      <p class="lede" style="max-width:40ch">Franchise partner to the world's great hospitality brands, across five states and growing.</p>
+      <div class="brand-strip">
+        <span>Hilton</span><span>Marriott</span><span>Hyatt</span><span>IHG</span>
+      </div>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_d512d84d-a500-4d45-8ed1-4e089138e415.png" alt=""><div class="shade"></div><div class="idx">01</div>
+      <div class="meta"><div class="b">Hilton</div><h3>Hilton Richmond Downtown</h3><div class="loc">Richmond · Virginia</div></div></div>
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_5ff758b9-0cd8-4799-9ee4-916a20dadcdb.png" alt=""><div class="shade"></div><div class="idx">02</div>
+      <div class="meta"><div class="b">Hilton</div><h3>Hilton Richmond Hotel &amp; Spa</h3><div class="loc">Short Pump · Virginia</div></div></div>
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_ae200731-552e-4762-a75e-5e81a85fa9d0.png" alt=""><div class="shade"></div><div class="idx">03</div>
+      <div class="meta"><div class="b">Hilton</div><h3>Embassy Suites by Hilton</h3><div class="loc">Richmond · Virginia</div></div></div>
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_4aff9f60-69ee-4798-ac13-d03b0203696a.png" alt=""><div class="shade"></div><div class="idx">04</div>
+      <div class="meta"><div class="b">Marriott</div><h3>Courtyard by Marriott</h3><div class="loc">Richmond Downtown · Virginia</div></div></div>
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_34c796bf-89c9-4b32-9311-021a41360cf6.png" alt=""><div class="shade"></div><div class="idx">05</div>
+      <div class="meta"><div class="b">Hyatt</div><h3>Hyatt Place</h3><div class="loc">Richmond Airport · Virginia</div></div></div>
+    <div class="card" data-reveal><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_024e2c40-0c49-490e-8a1e-259a060c34cf.png" alt=""><div class="shade"></div><div class="idx">06</div>
+      <div class="meta"><div class="b">Marriott</div><h3>Residence Inn by Marriott</h3><div class="loc">Henrico · Virginia</div></div></div>
+  </div>
+</section>
+
+<!-- MONDELLE INTRO -->
+<section id="mondelle-intro">
+  <div class="bg" id="mondelle-bg"></div>
+  <div class="tint"></div>
+  <div class="center" id="mondelle-center">
+    <div class="over">Chapter 04 — The Next Chapter · Opening 2028</div>
+    <h2>The <i>Mondelle</i></h2>
+    <div class="under">Hilton Richmond at Springline — the largest hotel &amp; conference center ever built in Chesterfield County.</div>
+  </div>
+</section>
+
+<!-- MONDELLE DETAIL -->
+<section id="mondelle-detail" class="section-pad">
+  <div class="chapter" data-reveal><span class="num">04</span><span class="line"></span><span class="label">Hilton Richmond · The Mondelle</span></div>
+  <h2 class="h-serif" data-reveal>A $160 million landmark,<br>rising at <i>Springline.</i></h2>
+  <p class="lede" data-reveal style="margin-top:26px">The first full-service hotel and conference center built in the Richmond region since 2009. Designed by Cooper Carry, The Mondelle anchors the $1 billion Springline at District 60 development — eleven floors of hospitality above a lawn made for concerts, festivals, and long summer evenings.</p>
+  <div class="spec-grid">
+    <div class="spec"><div class="v">270</div><div class="k">Guest Rooms</div></div>
+    <div class="spec"><div class="v">11</div><div class="k">Floors</div></div>
+    <div class="spec"><div class="v">30,000<em> SQ FT</em></div><div class="k">Meeting &amp; Event Space</div></div>
+    <div class="spec"><div class="v">12,600<em> SQ FT</em></div><div class="k">Grand Ballroom</div></div>
+  </div>
+  <div class="amenities" data-reveal>
+    <span><b>Rooftop</b> restaurant &amp; cocktail bar</span>
+    <span><b>Infinity</b> pool with skyline views</span>
+    <span><b>Italian</b> signature restaurant</span>
+    <span><b>Biergarten</b> &amp; second-floor terrace</span>
+    <span><b>Executive</b> meeting center</span>
+  </div>
+</section>
+
+<!-- SUITE / ROOFTOP DUO -->
+<section class="section-pad" style="padding-top:0">
+  <div class="duo">
+    <div>
+      <div class="frame" data-parallax style="aspect-ratio:16/10"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_142729_9ce3a977-506c-417c-a536-32336d5b9985.png" alt="Guest suite"><div class="cap">Guest Suites — skyline views</div></div>
+    </div>
+    <div>
+      <div class="frame" data-parallax style="aspect-ratio:16/10"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Hof7aTn3QCoQsRGnVYki5QQMyG/hf_20260812_143125_5c36af34-74d9-4316-a63f-58db180f5184.png" alt="Rooftop"><div class="cap">Rooftop — infinity pool &amp; cocktail bar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPRINGLINE -->
+<section id="springline" class="section-pad">
+  <div class="spring-grid">
+    <div>
+      <div class="chapter" data-reveal><span class="num">05</span><span class="line"></span><span class="label">Springline at District 60</span></div>
+      <h2 class="h-serif" data-reveal>The center of a<br><i>$1 billion</i> district.</h2>
+      <p class="lede" data-reveal style="margin-top:26px">Rising on 42 acres at Midlothian Turnpike and Chippenham Parkway, Springline at District 60 is Chesterfield's new downtown — and The Mondelle is its front porch.</p>
+    </div>
+    <div class="tick-list">
+      <div class="tick" data-reveal><span class="n">I</span><div class="txt"><b>1,200+ residences</b><small>The James and future phases bring apartment living to the district.</small></div></div>
+      <div class="tick" data-reveal><span class="n">II</span><div class="txt"><b>120,000 sq ft of retail &amp; dining</b><small>Shops, restaurants and an entertainment venue on walkable streets.</small></div></div>
+      <div class="tick" data-reveal><span class="n">III</span><div class="txt"><b>300,000 sq ft of offices</b><small>Including the new Timmons Group headquarters.</small></div></div>
+      <div class="tick" data-reveal><span class="n">IV</span><div class="txt"><b>An events lawn at the hotel's feet</b><small>Concerts and festivals in the park, steps from the ballroom.</small></div></div>
+      <div class="tick" data-reveal><span class="n">V</span><div class="txt"><b>A second Shamin hotel to follow</b><small>100+ room extended-stay property serving River City Sportsplex tourism.</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="section-pad">
+  <div class="bigline" data-reveal>Start your story<br>with <i>Shamin.</i></div>
+  <p class="lede" data-reveal style="text-align:center">Three thousand associates. One extended family. Whether you're planning an event, developing with us, or building a career — your chapter starts here.</p>
+  <div class="cta-row" data-reveal>
+    <a class="btn solid" href="mailto:info@shaminhotels.com">Get In Touch</a>
+    <a class="btn ghost" href="https://shaminhotels.com/careers/" target="_blank" rel="noopener">Join The Team</a>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div class="col">
+      <a class="logo" href="#hero" style="font-size:1.6rem">SHAM<em>I</em>N</a>
+      <p style="color:var(--muted);margin-top:14px;max-width:34ch;font-size:.85rem">Family-owned since 1978. The largest hotel owner &amp; operator in Virginia.</p>
+    </div>
+    <div class="col">
+      <div class="h">Headquarters</div>
+      <p>1001 Boulders Pkwy<br>Richmond, VA 23225</p>
+    </div>
+    <div class="col">
+      <div class="h">Contact</div>
+      <a href="tel:+18047779000">(804) 777-9000</a>
+      <a href="mailto:info@shaminhotels.com">info@shaminhotels.com</a>
+    </div>
+    <div class="col">
+      <div class="h">Explore</div>
+      <a href="#story">Our Story</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#mondelle-intro">The Mondelle</a>
+    </div>
+  </div>
+  <div class="foot-base">
+    <span>© 2026 Shamin Hotels. Concept site.</span>
+    <span>Design concept — cinematic scroll experience</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- Loader ---------- */
+(function(){
+  const word = document.getElementById('loader-word');
+  'SHAMIN'.split('').forEach((ch,i)=>{
+    const s=document.createElement('span'); s.textContent=ch; s.style.animationDelay=(i*0.12)+'s'; word.appendChild(s);
+  });
+  const bar=document.getElementById('loader-bar'), pct=document.getElementById('loader-pct');
+  const heroV=document.querySelector('#film .scene');
+  let p=0, target=30;
+  const iv=setInterval(()=>{ p+=(target-p)*0.08; bar.style.width=p+'%'; pct.textContent=Math.round(p)+'%'; if(p>=99.4){finish();} },40);
+  function bump(t){ target=Math.max(target,t); }
+  heroV.addEventListener('loadedmetadata',()=>bump(60));
+  heroV.addEventListener('canplaythrough',()=>bump(100),{once:true});
+  setTimeout(()=>bump(100),6000); // never trap the user
+  let finished=false;
+  function finish(){
+    if(finished)return; finished=true; clearInterval(iv);
+    bar.style.width='100%'; pct.textContent='100%';
+    setTimeout(()=>{ document.getElementById('loader').classList.add('done'); introPlay(); },350);
+  }
+})();
+
+/* ---------- Hero: continuous scroll-film engine ----------
+   Every <video class="scene"> inside #film is one chapter of a single continuous
+   journey (exterior -> lobby -> elevator -> suites -> rooftop). Scroll progress is
+   divided across scenes; within a scene the scroll scrubs that video's timeline,
+   and scenes crossfade at their boundaries. Adding a scene automatically extends
+   the pinned scroll distance and the chapter markers. */
+const scenes=gsap.utils.toArray('#film .scene');
+const FILM_LEN=scenes.length;
+const chaptersEl=document.getElementById('film-chapters');
+scenes.forEach(()=>{const i=document.createElement('i');chaptersEl.appendChild(i);});
+const chapterTicks=[...chaptersEl.children];
+const fcNum=document.getElementById('fc-num'), fcLabel=document.getElementById('fc-label');
+let capShown=-1;
+
+function introPlay(){
+  gsap.fromTo('#hero-content .kicker',{opacity:0,y:24},{opacity:1,y:0,duration:1.1,ease:'power3.out',delay:.1});
+  gsap.fromTo('#hero-content h1',{opacity:0,y:60,scale:.96},{opacity:1,y:0,scale:1,duration:1.4,ease:'power3.out',delay:.25});
+  gsap.fromTo('#hero-content .sub',{opacity:0,y:24},{opacity:1,y:0,duration:1.1,ease:'power3.out',delay:.55});
+}
+
+const FADE=0.06; /* fraction of a scene used to crossfade into the next */
+ScrollTrigger.create({
+  trigger:'#hero', start:'top top', end:'+='+(FILM_LEN*220)+'%', pin:true, scrub:0.6,
+  onUpdate(self){
+    const gp=Math.min(self.progress*FILM_LEN, FILM_LEN-0.0001);
+    const i=Math.floor(gp), t=gp-i;
+    const v=scenes[i];
+    /* scrub active scene: videos scrub their timeline, images get a camera push-in */
+    if(v.tagName==='VIDEO'){
+      if(v.duration && v.readyState>=2){ v.currentTime=Math.min(v.duration-0.05, t*v.duration); }
+    }
+    scenes.forEach((s,k)=>{
+      let o=0;
+      if(k===i){
+        o=1;
+        const isImg=s.tagName==='IMG';
+        /* base camera move for stills: slow dolly-in with slight rise */
+        let sc=isImg? 1.06+t*0.28 : 1;
+        let ty=isImg? t*-3 : 0;
+        /* push-through: accelerate zoom in the fade zone so we "enter" the next space */
+        if(t>1-FADE){ const f=(t-(1-FADE))/FADE; sc+= f*0.22; }
+        s.style.transform=`scale(${sc}) translateY(${ty}%)`;
+      } else if(k===i+1 && t>1-FADE){
+        const f=(t-(1-FADE))/FADE;
+        o=f;
+        /* incoming scene settles from a slight zoom, like the camera arriving */
+        s.style.transform=`scale(${1.18-f*0.12})`;
+        if(s.tagName==='VIDEO' && s.duration && s.readyState>=2) s.currentTime=0.03;
+      } else {
+        s.style.transform='scale(1.06)';
+      }
+      s.style.opacity=o;
+    });
+    /* chapter ticks + caption */
+    chapterTicks.forEach((c,k)=>c.classList.toggle('on',k===i));
+    if(gp<0.5){
+      if(capShown!==-1){ capShown=-1; gsap.killTweensOf('#film-caption'); gsap.set('#film-caption',{opacity:0}); }
+    } else if(capShown!==i){
+      capShown=i;
+      fcNum.textContent=v.dataset.num||('Scene 0'+(i+1));
+      fcLabel.textContent=v.dataset.caption||'';
+      gsap.killTweensOf('#film-caption');
+      gsap.fromTo('#film-caption',{opacity:0,y:20},{opacity:1,y:0,duration:.7,ease:'power3.out'});
+    }
+    /* big title only over the opening of scene 1 */
+    const titleP=Math.min(1,(gp/0.55));
+    gsap.set('#hero-content',{opacity:1-titleP, y:-120*titleP});
+    gsap.set('.scroll-cue',{opacity:1-gp*3});
+  }
+});
+
+/* ---------- Marquee ---------- */
+(function(){
+  const track=document.getElementById('marquee-track');
+  gsap.to(track,{xPercent:-50,ease:'none',duration:26,repeat:-1});
+})();
+
+/* ---------- Nav state ---------- */
+ScrollTrigger.create({start:80,onUpdate:()=>{},onToggle(self){document.getElementById('nav').classList.toggle('scrolled',self.isActive);}});
+
+/* ---------- Generic reveals ---------- */
+gsap.utils.toArray('[data-reveal]').forEach(el=>{
+  gsap.fromTo(el,{opacity:0,y:46},{opacity:1,y:0,duration:1.1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 86%'}});
+});
+
+/* ---------- Parallax frames ---------- */
+gsap.utils.toArray('[data-parallax] img').forEach(img=>{
+  gsap.fromTo(img,{yPercent:-8,scale:1.18},{yPercent:8,scale:1.18,ease:'none',
+    scrollTrigger:{trigger:img.closest('.frame'),start:'top bottom',end:'bottom top',scrub:true}});
+});
+
+/* ---------- Counters ---------- */
+gsap.utils.toArray('[data-count]').forEach(el=>{
+  const end=parseInt(el.dataset.count,10);
+  const obj={v:0};
+  ScrollTrigger.create({trigger:el,start:'top 88%',once:true,onEnter(){
+    gsap.to(obj,{v:end,duration:2,ease:'power2.out',onUpdate(){
+      el.textContent=Math.round(obj.v).toLocaleString('en-US');
+    }});
+  }});
+});
+
+/* ---------- Mondelle intro: cinematic zoom ---------- */
+ScrollTrigger.create({
+  trigger:'#mondelle-intro', start:'top top', end:'+=180%', pin:true, scrub:0.6,
+  onUpdate(self){
+    const p=self.progress;
+    gsap.set('#mondelle-bg',{scale:1.15+p*0.35, y:-40*p});
+    gsap.set('#mondelle-center',{opacity: p<0.12 ? p/0.12 : (p>0.75 ? 1-(p-0.75)/0.25 : 1), y:-60*p});
+  }
+});
+gsap.set('#mondelle-center',{opacity:0});
+
+/* Refresh triggers once media metadata is in.
+   Debug: open the page with #f=0.42 to jump to 42% of the hero film. */
+window.addEventListener('load',()=>{ setTimeout(()=>{
+  ScrollTrigger.refresh();
+  const m=location.hash.match(/f=([\d.]+)/);
+  if(m){
+    const st=ScrollTrigger.getAll().find(s=>s.trigger && s.trigger.id==='hero');
+    if(st) window.scrollTo(0, st.start+(st.end-st.start)*Math.min(1,parseFloat(m[1])));
+  }
+},400); });
+</script>
+</body>
+</html>
