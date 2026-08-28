@@ -7,28 +7,36 @@
 <meta name="description" content="Shamin Hotels — the largest hotel owner and operator in Virginia. 70+ hotels, 10,000+ rooms, one family story.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --cream:#f4f0e8; --navy:#181310; --ink:#1c1712; --muted:#77706a;
   --gold:#b98a3d; --gold-l:#e8c98b;
   --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Montserrat',-apple-system,sans-serif;
+  --sans:'Instrument Sans',-apple-system,'Segoe UI',sans-serif;
+  --line:rgba(28,23,18,.12);
+  --line-dark:rgba(255,255,255,.13);
   --ease:cubic-bezier(.19,1,.22,1);
 }
 @property --beam{syntax:'<angle>';initial-value:0deg;inherits:false}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  font-optical-sizing:auto;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
 img,video{display:block;max-width:100%}
 ::selection{background:var(--gold);color:#fff}
 
 /* ---- liquid glass primitives ---- */
-.glass-btn{position:relative;overflow:hidden;
+.glass-btn{position:relative;overflow:hidden;cursor:pointer;
   background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
   backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
   border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px rgba(0,0,0,.18);
   border-radius:100px;transition:background .4s,border-color .4s,color .4s,transform .45s var(--ease),box-shadow .45s}
+.glass-btn:active{transform:translateY(-1px) scale(.985);transition-duration:.12s}
 .glass-btn::after{content:"";position:absolute;top:-80%;left:-70%;width:45%;height:260%;
   transform:rotate(24deg);pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
@@ -54,8 +62,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:cent
   padding:22px clamp(20px,4vw,60px);border-bottom:1px solid transparent;
   transition:background .5s,padding .5s,border-color .5s}
 /* the nav logo stays hidden during the opening film and arrives once it ends */
-nav .logo{opacity:0;transform:translateY(-14px);transition:opacity .7s ease,transform .8s var(--ease)}
-nav.branded .logo{opacity:1;transform:none}
+nav .logo{opacity:0;transition:opacity .45s ease}
+nav.branded .logo{opacity:1}
 nav.scrolled{background:rgba(244,240,232,.42);backdrop-filter:blur(22px) saturate(160%);
   -webkit-backdrop-filter:blur(22px) saturate(160%);
   padding-top:12px;padding-bottom:12px;border-bottom-color:rgba(20,24,33,.08)}
@@ -101,9 +109,10 @@ nav.scrolled .enquire{color:var(--ink)}
 section{padding:clamp(70px,10vw,130px) clamp(20px,6vw,90px)}
 .wrap{max-width:1200px;margin:0 auto}
 .kick{font-size:.7rem;font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
-.display{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,4.6rem);line-height:1.08;color:var(--ink)}
+.display{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,4.6rem);line-height:1.06;
+  letter-spacing:-.015em;color:var(--ink)}
 .display i{font-style:italic;color:var(--gold)}
-.body-copy{font-weight:400;line-height:2.05;color:var(--muted);font-size:clamp(.92rem,1.05vw,1.02rem);max-width:60ch}
+.body-copy{font-weight:400;line-height:1.92;color:var(--muted);font-size:clamp(.94rem,1.05vw,1.04rem);max-width:58ch}
 .dark{background:var(--navy);color:#e9ecf2}
 .dark .display{color:#f2f4f8}
 .dark .body-copy{color:#9aa3b5}
@@ -123,7 +132,7 @@ section{padding:clamp(70px,10vw,130px) clamp(20px,6vw,90px)}
 /* ================= stats ================= */
 #stats .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,4vw,60px)}
 @media(max-width:900px){#stats .grid{grid-template-columns:repeat(2,1fr)}}
-#stats .cell{border-top:1px solid rgba(20,24,33,.14);padding-top:26px}
+#stats .cell{border-top:1px solid var(--line);padding-top:26px}
 #stats .v{font-family:var(--serif);font-size:clamp(2.6rem,5vw,4.4rem);font-weight:500;color:var(--ink);line-height:1}
 #stats .v sup{font-size:.4em;color:var(--gold)}
 #stats .l{margin-top:12px;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
@@ -215,7 +224,7 @@ section{padding:clamp(70px,10vw,130px) clamp(20px,6vw,90px)}
 #mondelle .specs{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
 #mondelle .spec{border-radius:12px;padding:20px 22px;
   background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.14)}
+  border:1px solid var(--line-dark)}
 #mondelle .spec .v{font-family:var(--serif);font-size:2rem;color:#f2f4f8}
 #mondelle .spec .v em{font-style:normal;color:var(--gold);font-size:.55em}
 #mondelle .spec .k{margin-top:6px;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#8b94a7}
@@ -227,7 +236,7 @@ section{padding:clamp(70px,10vw,130px) clamp(20px,6vw,90px)}
 /* ================= springline ================= */
 #springline .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,90px)}
 @media(max-width:900px){#springline .grid{grid-template-columns:1fr}}
-.tick{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid rgba(20,24,33,.12);align-items:baseline}
+.tick{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
 .tick .n{font-family:var(--serif);color:var(--gold);font-size:1.05rem;min-width:34px}
 .tick b{display:block;font-weight:600;font-size:.95rem;color:var(--ink)}
 .tick small{color:var(--muted);font-weight:400;line-height:1.7;display:block;margin-top:4px;font-size:.85rem}
@@ -717,7 +726,7 @@ function onScroll(){
   /* act 1: the split logo joins while the film softens behind it */
   const hl=document.getElementById('hero-logo');
   const lockup=hl.querySelector('.lockup'), words=hl.querySelector('.words');
-  const lt=Math.max(0,Math.min(1,(pA-.58)/.16));
+  const lt=Math.max(0,Math.min(1,(pA-.48)/.18));
   const ease=1-Math.pow(1-lt,3);
   const lx=`translateX(${(-(1-ease)*60).toFixed(2)}vw)`;
   const rx=`translateX(${((1-ease)*60).toFixed(2)}vw)`;
