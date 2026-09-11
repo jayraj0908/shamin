@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sailz Command Center — Shamin Hotels</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f3;--card:#ffffff;--ink:#191714;--muted:#7a746c;--line:#e7e3dc;
+  --gold:#b98a3d;--gold-soft:#f3ead8;--green:#2f7d4f;--green-soft:#e3f0e8;
+  --red:#b3452f;--red-soft:#f7e6e1;--blue:#2c5d8f;--blue-soft:#e4edf5;
+  --sans:'Instrument Sans',-apple-system,'Segoe UI',sans-serif;
+  --serif:'Cormorant Garamond',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+/* ---------- login gate ---------- */
+#gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#191714,#2a241d);padding:20px}
+#gate .box{width:min(400px,94vw);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);
+  border-radius:16px;padding:40px 36px;backdrop-filter:blur(10px);color:#f2efe9}
+#gate .mark{font-weight:700;letter-spacing:.32em;font-size:1.05rem;color:#fff}
+#gate .mark b{color:var(--gold)}
+#gate .sub{margin-top:6px;font-size:.78rem;color:rgba(255,255,255,.55);letter-spacing:.04em}
+#gate h1{font-family:var(--serif);font-weight:500;font-size:1.7rem;margin-top:28px;line-height:1.25}
+#gate p{margin-top:10px;font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.65)}
+#gate label{display:block;margin-top:26px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+#gate input{width:100%;margin-top:8px;padding:13px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.07);color:#fff;font-family:var(--sans);font-size:1rem;letter-spacing:.2em}
+#gate input::placeholder{letter-spacing:.06em;color:rgba(255,255,255,.35)}
+#gate button{width:100%;margin-top:16px;padding:13px;border:none;border-radius:9px;cursor:pointer;
+  background:var(--gold);color:#fff;font-family:var(--sans);font-weight:600;font-size:.9rem;letter-spacing:.06em;
+  transition:transform .2s,box-shadow .3s}
+#gate button:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(185,138,61,.4)}
+#gate .err{margin-top:10px;font-size:.78rem;color:#f0a08c;display:none}
+#gate .foot{margin-top:26px;font-size:.68rem;color:rgba(255,255,255,.35)}
+
+/* ---------- app shell ---------- */
+#app{display:none;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,32px) 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:20px 0 16px;border-bottom:1px solid var(--line)}
+.mark{font-weight:700;letter-spacing:.3em;font-size:.95rem}
+.mark b{color:var(--gold)}
+.crumb{font-size:.82rem;color:var(--muted)}
+.crumb strong{color:var(--ink);font-weight:600}
+.badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:100px}
+.pill.demo{background:var(--gold-soft);color:#8a6526;border:1px solid #e5d3ac}
+.pill.live{background:var(--green-soft);color:var(--green)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--gold);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-weight:600;font-size:.8rem}
+
+h2.sec{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  margin:30px 0 12px}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(5,1fr)}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;
+  box-shadow:0 1px 2px rgba(25,23,20,.04)}
+.kpi .k{font-size:.7rem;font-weight:500;letter-spacing:.06em;color:var(--muted)}
+.kpi .v{font-size:1.55rem;font-weight:700;margin-top:6px;letter-spacing:-.01em}
+.kpi .d{margin-top:6px;font-size:.72rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:6px}
+.up{background:var(--green-soft);color:var(--green)}
+.down{background:var(--red-soft);color:var(--red)}
+.kpi .note{font-size:.68rem;color:var(--muted);margin-top:6px}
+
+.two{grid-template-columns:1.6fr 1fr}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.card h3{font-size:.92rem;font-weight:600}
+.card .hint{font-size:.74rem;color:var(--muted);margin-top:2px}
+.chartbox{position:relative;height:240px;margin-top:14px}
+
+/* table */
+.tablecard{padding:0;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:820px}
+th{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;
+  text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#faf8f4}
+td .hname{font-weight:600}
+td .hloc{font-size:.72rem;color:var(--muted);margin-top:2px}
+.brand{font-size:.64rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;
+  border-radius:5px;background:var(--blue-soft);color:var(--blue)}
+.brand.hil{background:var(--gold-soft);color:#8a6526}
+.bars{display:inline-flex;align-items:flex-end;gap:2px;height:22px}
+.bars i{width:5px;border-radius:2px;background:#d9d2c5}
+.bars i.hi{background:var(--gold)}
+.pct{font-weight:600}
+.status{font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:100px}
+.s-strong{background:var(--green-soft);color:var(--green)}
+.s-watch{background:var(--gold-soft);color:#8a6526}
+.s-action{background:var(--red-soft);color:var(--red)}
+
+/* campaigns + ai visibility + projects */
+.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:1000px){.three{grid-template-columns:1fr}}
+.rowline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;
+  border-bottom:1px solid var(--line)}
+.rowline:last-child{border-bottom:none}
+.rowline .t{font-size:.83rem;font-weight:600}
+.rowline .s{font-size:.72rem;color:var(--muted);margin-top:2px}
+.rowline .r{text-align:right}
+.rowline .r b{font-size:.9rem}
+.rowline .r span{display:block;font-size:.68rem;color:var(--muted)}
+.qmiss{color:var(--red);font-weight:700}
+.qhit{color:var(--green);font-weight:700}
+.prog{height:6px;border-radius:4px;background:#ece7de;margin-top:8px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:4px;background:var(--gold)}
+
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);display:flex;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.72rem;color:var(--muted)}
+footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="mark">SAIL<b>Z</b></div>
+    <div class="sub">Growth infrastructure for hospitality</div>
+    <h1>Shamin Hotels<br>Command Center</h1>
+    <p>Private preview prepared for Shamin Hotels leadership. Enter the access code from your invitation email.</p>
+    <label for="code">Access code</label>
+    <input id="code" placeholder="Enter code" autocomplete="off">
+    <button onclick="unlock()">Enter Command Center</button>
+    <div class="err" id="err">That code isn't right — check the email from Sailz.</div>
+    <div class="foot">Demo environment · Synthetic data for illustration · © 2026 Sailz</div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div>
+      <div class="mark">SAIL<b>Z</b></div>
+      <div class="crumb" style="margin-top:4px"><strong>Shamin Hotels</strong> · Portfolio Command Center · Week of Sep 7, 2026</div>
+    </div>
+    <div class="badges">
+      <span class="pill demo">Demo Data</span>
+      <span class="pill live">10 of 80+ properties</span>
+      <div class="avatar">NA</div>
+    </div>
+  </header>
+
+  <h2 class="sec">Portfolio Pulse</h2>
+  <div class="grid kpis">
+    <div class="card kpi"><div class="k">Revenue · MTD</div><div class="v">$4.87M</div><span class="d up">▲ 11.2%</span><div class="note">vs same period last year</div></div>
+    <div class="card kpi"><div class="k">RevPAR</div><div class="v">$121.40</div><span class="d up">▲ 6.8%</span><div class="note">blended, 10 tracked hotels</div></div>
+    <div class="card kpi"><div class="k">Occupancy</div><div class="v">78.3%</div><span class="d up">▲ 3.1 pts</span><div class="note">weekend peak 91%</div></div>
+    <div class="card kpi"><div class="k">Direct Booking Share</div><div class="v">41.9%</div><span class="d up">▲ 5.4 pts</span><div class="note">every point ≈ $38K/yr saved in OTA fees</div></div>
+    <div class="card kpi"><div class="k">AI-Search Referrals</div><div class="v">1,284</div><span class="d up">▲ 64%</span><div class="note">ChatGPT · Perplexity · Copilot → site</div></div>
+  </div>
+
+  <div class="grid two" style="margin-top:14px">
+    <div class="card">
+      <h3>Direct vs OTA revenue — trailing 12 weeks</h3>
+      <div class="hint">The gap Sailz exists to widen: direct grows, commission spend shrinks</div>
+      <div class="chartbox"><canvas id="trend"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Booking channel mix</h3>
+      <div class="hint">AI assistants are already a measurable channel</div>
+      <div class="chartbox"><canvas id="mix"></canvas></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Properties</h2>
+  <div class="card tablecard">
+    <table>
+      <thead><tr><th>Hotel</th><th>Brand</th><th>Occ</th><th>ADR</th><th>RevPAR</th><th>Direct %</th><th>8-wk trend</th><th>Status</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="grid three" style="margin-top:14px">
+    <div class="card">
+      <h3>Active campaigns</h3>
+      <div class="hint">Paid channels, tracked to booked revenue</div>
+      <div class="rowline"><div><div class="t">Meta — VB Oceanfront Fall</div><div class="s">Retargeting + lookalikes</div></div><div class="r"><b>5.8× ROAS</b><span>$12.4K spend · 402 bookings</span></div></div>
+      <div class="rowline"><div><div class="t">ChatGPT Ads — Richmond pilot</div><div class="s">Sponsored placement, travel intents</div></div><div class="r"><b>4.1× ROAS</b><span>$6.0K spend · 187 bookings</span></div></div>
+      <div class="rowline"><div><div class="t">Google PMax — Airport cluster</div><div class="s">Sheraton + Residence Inn RIC</div></div><div class="r"><b>6.3× ROAS</b><span>$8.2K spend · 311 bookings</span></div></div>
+    </div>
+    <div class="card">
+      <h3>AI search visibility</h3>
+      <div class="hint">Does an AI assistant recommend a Shamin property?</div>
+      <div class="rowline"><div><div class="t">"hotels near Richmond airport"</div><div class="s">Before Sailz → after schema + AEO work</div></div><div class="r"><b><span class="qmiss">Absent</span> → <span class="qhit">#2</span></b><span>Sheraton Richmond Airport</span></div></div>
+      <div class="rowline"><div><div class="t">"best hotel Short Pump VA"</div><div class="s">Flagship four-diamond property</div></div><div class="r"><b><span class="qmiss">Absent</span> → <span class="qhit">#1</span></b><span>Hilton Richmond Hotel &amp; Spa</span></div></div>
+      <div class="rowline"><div><div class="t">"oceanfront hotel Virginia Beach"</div><div class="s">Highest-volume leisure query</div></div><div class="r"><b><span class="qmiss">#9</span> → <span class="qhit">#3</span></b><span>Hilton VB Oceanfront</span></div></div>
+      <div class="rowline"><div><div class="t">"hotel near VCU medical center"</div><div class="s">Group + medical travel demand</div></div><div class="r"><b><span class="qmiss">Absent</span> → <span class="qhit">#4</span></b><span>Hilton Richmond Downtown</span></div></div>
+    </div>
+    <div class="card">
+      <h3>Sailz rollout</h3>
+      <div class="hint">What we'd ship in the first 90 days</div>
+      <div class="rowline"><div style="width:100%"><div class="t">Cinematic web experience</div><div class="s">Concept live — you're one click from it</div><div class="prog"><i style="width:92%"></i></div></div></div>
+      <div class="rowline"><div style="width:100%"><div class="t">AI-search optimization (AEO)</div><div class="s">Schema, entity pages, review feeds, per property</div><div class="prog"><i style="width:38%"></i></div></div></div>
+      <div class="rowline"><div style="width:100%"><div class="t">Paid pilot — 3 hotels</div><div class="s">Meta + ChatGPT Ads with booked-revenue tracking</div><div class="prog"><i style="width:15%"></i></div></div></div>
+      <div class="rowline"><div style="width:100%"><div class="t">This dashboard, on live data</div><div class="s">PMS + channel connections, weekly exec digest</div><div class="prog"><i style="width:8%"></i></div></div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div><b>Sailz</b> · AI growth infrastructure for hospitality · hello@sailz.org</div>
+    <div>Demo environment — all figures are synthetic and for illustration only</div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+/* ---- gate ---- */
+function unlock(){
+  const v=document.getElementById('code').value.trim().toUpperCase();
+  if(v==='SHAMIN2026'){sessionStorage.setItem('sailz','1');show();}
+  else document.getElementById('err').style.display='block';
+}
+document.getElementById('code').addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
+function show(){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block';draw();}
+if(sessionStorage.getItem('sailz')==='1')show();
+
+/* ---- data (synthetic, clearly labeled) ---- */
+const hotels=[
+ ["Hilton Richmond Hotel & Spa","Short Pump · VA","Hilton",86,168,144,52,[5,6,6,7,7,8,8,9],"s-strong","Strong"],
+ ["Hilton Virginia Beach Oceanfront","Virginia Beach · VA","Hilton",84,201,169,47,[6,7,8,8,7,8,9,9],"s-strong","Strong"],
+ ["Sheraton Virginia Beach Oceanfront","Virginia Beach · VA","Marriott",81,174,141,39,[5,5,6,7,7,7,8,8],"s-strong","Strong"],
+ ["Renaissance Portsmouth-Norfolk","Portsmouth · VA","Marriott",76,152,116,41,[6,6,5,6,7,7,7,8],"s-strong","Strong"],
+ ["Hilton Richmond Downtown","Richmond · VA","Hilton",72,139,100,36,[5,5,6,6,6,7,6,7],"s-watch","Watch"],
+ ["Sheraton Richmond Airport","Richmond · VA","Marriott",79,128,101,44,[4,5,6,6,7,7,8,8],"s-strong","Strong"],
+ ["Delta Hotels Norfolk Airport","Norfolk · VA","Marriott",74,121,90,38,[5,6,6,5,6,7,7,7],"s-watch","Watch"],
+ ["The Landing at Hampton Marina","Hampton · VA","Hilton",69,146,101,35,[4,4,5,5,6,6,6,7],"s-watch","Watch"],
+ ["DoubleTree by Hilton Williamsburg","Williamsburg · VA","Hilton",66,118,78,31,[6,5,5,4,5,5,4,5],"s-action","Action"],
+ ["Residence Inn Richmond Airport","Sandston · VA","Marriott",83,132,110,49,[3,4,5,6,7,8,8,9],"s-strong","Strong"]
+];
+const rows=document.getElementById('rows');
+rows.innerHTML=hotels.map(h=>`<tr>
+ <td><div class="hname">${h[0]}</div><div class="hloc">${h[1]}</div></td>
+ <td><span class="brand ${h[2]==='Hilton'?'hil':''}">${h[2]}</span></td>
+ <td class="pct">${h[3]}%</td><td>$${h[4]}</td><td>$${h[5]}</td><td class="pct">${h[6]}%</td>
+ <td><span class="bars">${h[7].map((b,i)=>`<i style="height:${b*2+4}px" class="${i>=6?'hi':''}"></i>`).join('')}</span></td>
+ <td><span class="status ${h[8]}">${h[9]}</span></td></tr>`).join('');
+
+/* ---- charts ---- */
+function draw(){
+ if(window.__drawn||!window.Chart)return;window.__drawn=1;
+ const gold='#b98a3d',inkc='#8b8378',grid='#eee9e0';
+ Chart.defaults.font.family="'Instrument Sans',sans-serif";
+ Chart.defaults.color=inkc;
+ new Chart(document.getElementById('trend'),{type:'line',data:{
+  labels:['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'],
+  datasets:[
+   {label:'Direct',data:[212,220,231,228,246,258,251,274,288,296,309,331],borderColor:gold,backgroundColor:'rgba(185,138,61,.12)',fill:true,tension:.4,borderWidth:2.5,pointRadius:0},
+   {label:'OTA',data:[298,301,294,300,287,291,283,279,272,268,262,256],borderColor:'#b7afa2',backgroundColor:'transparent',tension:.4,borderWidth:2,pointRadius:0,borderDash:[5,4]}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:14,boxHeight:3}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid},ticks:{callback:v=>'$'+v+'K'}}}}});
+ new Chart(document.getElementById('mix'),{type:'doughnut',data:{
+  labels:['Direct site','OTA','AI assistants','Paid (Meta+GPT)','Organic search'],
+  datasets:[{data:[42,31,8,11,8],backgroundColor:[gold,'#d9d2c5','#2c5d8f','#8a6526','#b7afa2'],borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,boxHeight:12,padding:10}}}}});
+}
+</script>
+</body>
+</html>
