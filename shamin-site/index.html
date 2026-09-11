@@ -75,6 +75,7 @@ nav.scrolled .links{color:var(--ink)}
 nav .links a{position:relative;padding:4px 0}
 nav .links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .35s}
 nav .links a:hover::after{width:100%}
+nav .actions{display:flex;align-items:center;gap:10px}
 nav .enquire{font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#fff;padding:12px 24px}
 nav.scrolled .enquire{color:var(--ink)}
 @media(max-width:900px){nav .links{display:none}}
@@ -361,7 +362,10 @@ section{padding:clamp(70px,10vw,130px) clamp(20px,6vw,90px)}
     <a href="#news">News</a>
     <a href="#final-wrap">Careers</a>
   </div>
-  <a class="enquire glass-btn" href="https://shaminhotels.com/careers/" target="_blank" rel="noopener">Join The Team</a>
+  <div class="actions">
+    <a class="enquire glass-btn" href="https://shaminhotels.com/careers/" target="_blank" rel="noopener">Join The Team</a>
+    <a class="enquire glass-btn" href="dashboard.html">Dashboard</a>
+  </div>
 </nav>
 
 <!-- 1 · HERO -->
